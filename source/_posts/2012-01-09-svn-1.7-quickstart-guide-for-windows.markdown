@@ -1,0 +1,68 @@
+---
+layout: post
+title: "SVN 1.7 Quickstart Guide for Windows"
+date: 2012-01-09 00:39
+comments: true
+categories: [version control, Windows]
+---
+
+At work we use SVN for version control, so I need to be able to connect to the repository from my Windows machine. After reinstalling my system, I remembered what a pain it was to have the whole client/plugins/libraries/certificate stuff set up. *Especially* if you try SVN 1.7. It's working copy format is incompatible with previous versions, so you'll have to have every client using this particular version (as a bonus feature for using 1.7, you get to [change the case of a filename in one step on Windows](http://subversion.apache.org/faq.html#case-change) :). 
+
+My main use cases for SVN are:
+
+* trying out stuff on the command line. I want to have the `svn` commands available for scripting too, just in case I want to automate something.
+* handling versioning straight from my IDE (in this case, Eclipse)
+* provide Apache Maven with the right svn capabilities so that its versioning plugins work.
+* having to checkout a repository on disk. I'm not really confortable in the Windows shell so I end up doing this from Windows Explorer most of the time.
+
+The architecture of these solutions on Windows is a bit convoluted, so I'll take a shot at explaining how they interact with each other and how you should configure them. Also, there are some annoyances if you need to use certificates to authenticate yourself (`https`) but there are some tips here that help.
+
+## Having SVN available in the command line ##
+
+[TortoiseSVN](http://tortoisesvn.net/ "TortoiseSVN") comes with its own CLI binaries (optional on install, available in the `\bin\` folder of the installation). You can also install [SilkSVN](http://www.sliksvn.com/en/download "SilkSVN") which works pretty good and supports a lot of other projects. I currently run SilkSVN 1.7.2.
+
+## Having SVN work with Java applications ##
+
+There are two main plugins for SVN in Eclipse - Subclipse and Subversive. I have only used Subclipse and I'm pretty satisfied - functionally it covers all I need and performance-wise I don't think Subversive could be much better given how slow Eclipse is as a whole.
+
+First of all, if you're running with SVN 1.7 you need Subclipse 1.8. It's not available through the Eclipse Marketplace so you have to add [the download site](http://subclipse.tigris.org/update_1.8.x "Subclipse download site") manually.
+
+The Subclipse project does not have its own svn implementation. It either uses [SVNKit](http://en.wikipedia.org/wiki/SVNKit "SVNKit") (a Java client implementation) or JavaHL. More information about both is in [the SVN book](http://svnbook.red-bean.com/en/1.7/svn.developer.usingapi.html "JavaHL vs SVNKit"). I prefer to use JavaHL (currently version 1.7.2).
+
+Then comes the problem with certificates. Subclipse will keep asking for your certificate and passphrase unless you tell it otherwise. The dialog box in Eclipse doesn't have any 'remember' checkbox and I couldn't find anything in the `Preferences` menu related to this. To make it work, you need to change the configuration for the underlying svn client. You can find that in `C:\Users\{username}\AppData\Roaming\Subversion`: `config` and `servers` files. Here's my current configuration:
+
+```
+    ssl-client-cert-prompt = yes
+    ssl-client-cert-file = <path-to-file> # example: C:\cert\me.pfx
+    store-ssl-client-cert-pp = yes
+    store-ssl-client-cert-pp-plaintext = no
+```
+
+I first got the impression that `ssl-authority-files` should be the path list for the certificates I'm trying to send to the server and I lost a bit of time trying to debug the error it gave me. That property is for accepted server certificates and not for the client certificates you want to send out.
+
+Maven also needs SVN connectors if you want to have it manage version control. Unfortunately, if you've checked out your project with 1.7, the working copy format is different and Maven cannot use it. You get the following error (Maven 2.2):
+
+> svn: The path '[...]' appears to be part of a Subversion 1.7 or greater working copy. Please upgrade your Subversion client to use this working copy.
+
+You can circumvent this by referencing SVNKit 1.7 as a dependency in all of your plugins. You need to have the tmatesoft repositories listed in your pom file ([snapshots](http://maven.tmatesoft.com/content/repositories/snapshots/ "tmatesoft snapshot repository"), [releases](http://maven.tmatesoft.com/content/repositories/releases/ "tmatesoft release repository") and you have to add the following dependency to any plugin that's using SVN:
+
+``` xml
+    <dependencies>
+        <dependency>
+            <groupId>org.tmatesoft.svnkit</groupId>
+            <artifactId>svnkit</artifactId>
+            <version>1.7.0-SNAPSHOT</version> <!-- or svnkit:1.7.0-alpha1 -->
+        </dependency>
+    </dependencies>
+```
+
+## Having SVN integrated with Windows Explorer ##
+
+[TortoiseSVN](http://tortoisesvn.net/ "TortoiseSVN") is the best pick. I use 1.7.3 for 64bit systems and it worked out of the box, no tweaking needed. 
+
+The only problem encountered with Tortoise was a bunch of popups popped up :) after I installed my ActivClient smartcard manager (I use it for VPN authentication). Even if I gave Tortoise the path to my certificate, it would still ask for the smartcard 20-30 times before it would start any operation. This goes away if you add a key to your registry. More information in this [bug report](http://code.google.com/p/tortoisesvn/issues/detail?id=119 "Tortoise SVN Issue 119"):
+
+> OpenSSL is built with CAPI enabled. In that build, OpenSSL opens the crypto-API certificate store without showing an UI to find out if there's a matching certificate it can use.
+> Some smartcard software don't respect the non-UI flag and pop up a dialog asking the user to insert the smartcard into the reading device. That dialog is very annoying.
+
+This wraps it up, you should have SVN 1.7 working on Windows in all cases.

@@ -3,12 +3,9 @@ wordpress_id: 13
 layout: post
 title: Proxy settings with HTTPClient and Spring
 date: Sat Oct 30 21:16:06 +0300 2010
-categories: 
-  slug: java
-  title: java
-  autoslug: java
-wordpress_url: http://improve.ro/?p=13
+categories: [HTTP, java, spring]
 ---
+
 Since I didn't find any example on the Web on how to do this, I'll give it a go here and try to explain things a bit. I'm going to treat the particular case of using [HTTPClient](http://hc.apache.org/httpcomponents-client-ga/index.html) and [Spring](http://www.springsource.org/). For changing the proxy value in the JRE, see the official documentation on [Java Networking and Proxies](http://java.sun.com/javase/6/docs/technotes/guides/net/proxies.html).
 
 From the [documentation](http://hc.apache.org/httpcomponents-client-ga/tutorial/html/connmgmt.html#d4e540), we see that in order to set up a proxy for requests made through HTTPClient you have three options: specifying it directly, getting it from the JRE or implementing a custom RoutePlanner to have complete control over the HTTP route computation. 

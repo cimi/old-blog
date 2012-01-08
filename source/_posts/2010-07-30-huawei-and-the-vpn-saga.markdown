@@ -1,14 +1,12 @@
 --- 
 wordpress_id: 29
-layout: default
+layout: post
 title: Huawei and the VPN Saga
 date: Fri Jul 30 11:09:31 +0300 2010
-categories: 
-  slug: troubleshooting
-  title: troubleshooting
-  autoslug: troubleshooting
+categories: [networking, troubleshooting]
 wordpress_url: http://improve.ro/?p=29
 ---
+
 After a horrendous experience, usually I feel the need to share my findings with the world. Other unhappy souls shouldn't go through what I've gone through yesterday.My company offers the possibility of working remotely, by connecting to its VPN. I have a USB dongle with my certificates and also a preinstalled software that manages the VPN connection. I travel fairly often to my hometown, Braşov. This week was no exception, I decided to work remotely for a couple of days. 
 
 In Bucharest I have no issues connecting to the VPN from home, I've done it quite a few times. The first surprise came to me when I realized that, although I have the same ISP ([Clicknet](http://www.romtelecom.ro/personal/internet/), Romanian DSL provider), in Braşov my VPN connection failed. Moreover, when I tried to connect to it, I'd lose internet connectivity for about a minute.  I first thought it's a port forwarding issue, although it seemed strange that an ISP would have different port forwarding policies in different cities. Also, I couldn't explain the connection loss. After being on the phone with "technical" support for about an hour, passed around by 4 or 5 people, trying to explain to most of them what VPN means, I finally got a straight answer from one of them: they aren't blocking any ports, anywhere. I took a closer look at the modem/router's behavior and then I noticed something. Whenever I tried to connect to the VPN, my router would reset (!) itself. 
@@ -17,7 +15,9 @@ I have a [Huawei SmartAX MT882](http://www.huawei.com/products/terminal/products
 
 When I came back home, later in the evening, I started thinking about what could be causing the problem, but I couldn't come up with any solution. My work-supplied laptop is running Windows XP and is bundled with tons of 'enterprise software' that make it run slower than PC's made in the early 2000's. Really. I'm not joking. I was so angry that I decided to purge my system of anything that I didn't need, regardless if it's "policy" or whatever.I started with the anti-virus software, McAfee Enterprise Suite. I never understood why anyone would need anti-virus software, assuming he's at least a bit computer savvy and doesn't download warez daily. It turns out that uninstalling McAfee is an adventure. I had to remove about three or four of their products from the Windows Add/Remove programs list. I couldn't remove the McAfee Agent, because it threw an "in-use" error when I tried to do that. If I restarted the system, the agent would reinstall what I'd previously removed. Swell. Eventually, I found out that the solution is to remove the McAfee common framework. It's located in Program Files/McAfee/Common Framework and you need to run: ``frminst.exe /forceuninstall``. After removing it, I ran their [Consumer Products Removal tool](http://service.mcafee.com/FAQDocument.aspx?id=TS100507) and after a reboot I was McAfee free. After removing the anti-virus, my 3G modem started working again. Damn.
 
-So, "I've learned something today" aka conclusions:- Huawei, el-cheapo of networking devices, has a long way to go.
+So, "I've learned something today" aka conclusions:
+
+- Huawei, el-cheapo of networking devices, has a long way to go.
 - McAffee is a piece of crap. I suspect all antivirus software is.
 - I really, truly, hate Windows, Microsoft and the people that use the term 'enterprise' to hide incompetence.
 - Technical support is mostly useless for advanced issues, so why pay for it? (read the last point again, too)
