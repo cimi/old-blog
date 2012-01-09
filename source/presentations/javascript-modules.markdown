@@ -1,0 +1,126 @@
+---
+layout: presentation 
+title: "Delivering Modular JavaScript to Mobile Clients"
+templateid: hp
+date: 2012-01-09 00:50
+---
+
+<article class='biglogo'></article>
+
+<article>
+<h1>
+  Delivering Modular JavaScript to Mobile Clients
+</h1>
+<p>
+  <strong>Author:</strong> Alex Ciminian <br />
+	  January 9th, 2012
+</p>
+</article>
+	  
+<article class='smaller'>
+<q>The module pattern is widely used because [...] helps organize your code as it grows. [...] the <strong>module 
+pattern provides the tools to create self-contained decoupled pieces of code</strong>, which can be treated as black boxes of functionality and added, replaced, or removed [...].</q>
+<div class='author'>
+  <a href="http://shop.oreilly.com/product/9780596806767.do">Stoyan Stefanov, <br />JavaScript Patterns (O'Reilly, 2010)</a>
+</div>
+</article>
+	  
+<article>
+<h3>The JavaScript Module pattern</h3>
+<ul class="build">
+  <li>JavaScript does not have special syntax for namespacing/packages.</li>
+  <li>The module pattern is <a href="http://stackoverflow.com/a/7472020/182629">a combination of several patterns</a>: namespaces, immediate functions, private/privileged functions, declaring dependencies.</li>
+  <li>There are many ways to do it, but now <a href="https://github.com/amdjs/amdjs-api/wiki/AMD">a standard has emerged: AMD</a>.</li>
+</ul>
+</article>
+	  
+<article>
+<h3>What is AMD?</h3>
+<ul class="build">
+<li>Background: node.js, <a href="http://www.commonjs.org/">CommonJS</a>, <a href="http://wiki.commonjs.org/wiki/Modules/Transport">transport formats</a>.</li>
+<li>Simple API for defining and including modules, extensive information on the wiki.</li>
+<li>Also offers the opportunity to create plugins for your loader (not sure why, yet :).</li>
+<li>Several compatible loader libraries: <a href="http://requirejs.org/">require.js</a>, <a href="https://github.com/unscriptable/curl">curl.js</a>, <a href="http://labjs.com/">lab.js</a>, 
+<a href="https://github.com/jrburke/almond">almond</a>, <a href="https://github.com/jbrantly/yabble">yabble</a> and others.</li>
+</ul>
+</article>
+	  
+<article>
+<h3>The AMD API - defining a module</h3>
+<section>
+
+<pre>
+define('myModule', 
+    ['foo', 'bar'], 
+    // module definition function
+    // dependencies (foo and bar) are mapped to function parameters
+    function ( foo, bar ) {
+        // return a value that defines the module export
+        // (i.e the functionality we want to expose for consumption)
+    
+        // create your module here
+        var myModule = {
+            doStuff:function(){
+                console.log('Yay! Stuff');
+            }
+        }
+ 
+        return myModule;
+});
+</pre>
+
+</section>
+</article>
+		
+<article>
+<h3>The AMD API - requiring modules</h3>
+<section>
+<pre>
+define(function ( require ) {
+    var isReady = false, foobar;
+ 
+    // note the inline require within our module definition
+    require(['foo', 'bar'], function (foo, bar) {
+        isReady = true;
+        foobar = foo() + bar();
+    });
+ 
+    // we can still return a module
+    return {
+        isReady: isReady,
+        foobar: foobar
+    };
+});
+</pre>
+</section>
+</article>
+	  
+<article>
+<h3>AMD on Mobile</h3>
+<ul class="build">
+	<li>Use case: minimize the number of HTTP requests while keeping the AMD structure and using an existing loader.</li>
+	<li>Ideally: serve one file, with the loader bundled.</li>
+	<li>Enter <a href="https://github.com/jrburke/almond">almond.js</a> - lightweight AMD shim.</li>
+	<li>To build the final javascript, we can integrate <a href="https://github.com/jrburke/r.js/">r.js</a> in our Ant task (through Rhino).</li>
+</ul>
+</article>
+
+<article>
+<h3>Benefits</h3>
+<ul class="build">
+	<li>Better code structure, clearer functions/modules.</li>
+	<li>Very little extra code to include (almond is under 1KB minified and gzipped).</li>
+	<li>Negligible impact on performance (just a couple of function calls).</li>
+	<li>Standard modules that can be used in other situations.</li>
+</ul>
+</article>
+
+<article>
+<h3>Resources</h3>
+<p>Alex MacCaw: <a href="http://shop.oreilly.com/product/0636920018421.do">JavaScript Web Applications</a></p>
+<p>Addy Osmani: <a href="http://addyosmani.com/writing-modular-js/">Writing Modular JavaScript</a></p>
+<p><a href="http://requirejs.org/docs/optimization.html">Require.js Optimizer</a></p>
+<p><a href="https://github.com/amdjs/amdjs-api/wiki">AMD API specification</a></p>
+</article>
+
+<article class='biglogo'></article>
