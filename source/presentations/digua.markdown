@@ -1,8 +1,8 @@
 ---
 layout: presentation 
-title: "Digua"
+title: "Digua - Web Compressor and Obfuscator"
 templateid: poli
-date: 2012-01-09 00:50
+date: 2011-07-09 16:00
 ---
 
 <article class='biglogo'>
