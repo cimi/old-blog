@@ -47,7 +47,15 @@
   <body id="{{ page.templateid }}" style='display: none'>
 
     <section class='slides layout-regular template-default'>
-        {{ content }}
+       <article class="biglogo"></article>
+       {{ if page.author != 'custom' }}
+       <article>
+        <h1>{{ page.title }}</h1>
+        <p><strong>Author</strong> Alex Ciminian <br /> {{ page.date }}</p>
+       </article>
+       {{ endif }}
+       {{ content }}
+       <article class="biglogo"></article>
     </section>
   </body>
 </html>
