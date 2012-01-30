@@ -48,12 +48,12 @@
 
     <section class='slides layout-regular template-default'>
        <article class="biglogo"></article>
-       {{ if page.author != 'custom' }}
+       {% if page.authorslide == 'true' %}
        <article>
         <h1>{{ page.title }}</h1>
         <p><strong>Author</strong> Alex Ciminian <br /> {{ page.date }}</p>
        </article>
-       {{ endif }}
+       {% endif %}
        {{ content }}
        <article class="biglogo"></article>
     </section>

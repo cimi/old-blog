@@ -13,6 +13,8 @@ Trying to deploy some RSS feeds as .jspx views on a [WebLogic 10 server](http://
 
 In Firefox, I saw something like: `<summary>Formaci�n</summary>`. The byte sequence for the strange character was `0xEF 0xBF 0xBD` and I seemed to get that for all UTF-8 chars that I was supposed to receive in the tests I was conducting (á, ó, í). I checked the content-type and encoding in Firebug and it seemed ok (`Content-Type: application/xhtml+xml; charset=UTF-8`).I later found out that `�` is the [Unicode Replacement Character U+FFFD](http://www.fileformat.info/info/unicode/char/fffd/index.htm) and that the problem was probably caused by the fact that the server, although told to output UTF-8, sent out ISO-8859-1. 
 
+<!-- more -->
+
 The fix came from my .jspx files, more specifically the page directive tag. What surprised me was the fact that the **order of attributes** in the .jspx page directive matters! Initially I had this:
 
 ``` xml

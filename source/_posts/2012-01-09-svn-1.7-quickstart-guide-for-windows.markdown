@@ -17,6 +17,8 @@ My main use cases for SVN are:
 
 The architecture of these solutions on Windows is a bit convoluted, so I'll take a shot at explaining how they interact with each other and how you should configure them. Also, there are some annoyances if you need to use certificates to authenticate yourself (`https`) but there are some tips here that help.
 
+<!-- more -->
+
 ## Having SVN available in the command line ##
 
 [TortoiseSVN](http://tortoisesvn.net/ "TortoiseSVN") comes with its own CLI binaries (optional on install, available in the `\bin\` folder of the installation). You can also install [SilkSVN](http://www.sliksvn.com/en/download "SilkSVN") which works pretty good and supports a lot of other projects. I currently run SilkSVN 1.7.2.

@@ -1,0 +1,259 @@
+---
+layout: presentation 
+title: "Improving Web Frontend Performance"
+templateid: hp
+date: 2011-09-21 14:00
+authorslide: "true"
+---
+
+<article>
+<h3>
+  Presentation Outline
+</h3>
+<ul>
+  <li>
+    Speed as a <strong>feature</strong>
+  </li>
+	  <li>
+		<strong>HTTP</strong> performance optimization
+	  </li>
+	  <li>
+		<strong>Organizing HTML resources</strong>
+	  </li>
+	  <li>
+		<strong>CSS Optimizations</strong>
+	  </li>
+	  <li>
+		<strong>JS Optimizations</strong>
+	  </li>
+</ul>
+</article>      
+
+  <article>
+<h3>
+  Speed as a Feature
+</h3>
+<ul class="build">
+  <li>
+		Speed improves user experience.
+  </li>
+  <li>
+    Smaller and faster websites lead to reduced costs, especially in the mobile space.
+  </li>
+  <li>
+    It is taken into account by Google in SR rankings.
+  </li>
+	  <li>
+    Fact: on average 80% time spent downloading page resources, 20% spent on the server rendering the page.
+  </li>
+</ul>
+</article>
+  
+  <article class='smaller'>
+	<q>
+	Research on a wide variety of hypertext systems has shown that <strong>users need response times of less than one second</strong>
+	when moving from one page to another if they are to navigate freely through an information space.
+	</q>
+<div class='author'>
+  <a href="http://www.useit.com/alertbox/response-times.html">Jakob Nielsen, <br />usability expert</a>
+</div>
+</article>
+  
+<article class='smaller'>
+<q>
+		The page with 10 results took .4 seconds to generate. The page with 30 results took .9 seconds. 
+		<strong>Half a second delay caused a 20% drop in traffic. Half a second delay killed user satisfaction.</strong>
+	</q>
+<div class='author'>
+  <a href="http://glinden.blogspot.com/2006/11/marissa-mayer-at-web-20.html">Greg Linden, <br /> on A/B testing for Google</a>
+</div>
+</article>
+
+  <article>
+	<h3>Website Performance Techniques (HTTP)</h3>
+	<ul class="build">
+		<li>
+			<strong>Reduce HTTP requests</strong>
+		</li>
+		<li>
+			<strong>Use HTTP compression:</strong> gzip, deflate
+		</li>
+		<li>
+			<strong>Use HTTP caching: </strong> If-Modified Since, ETag, Expires, Max-age
+		</li>
+	</ul>
+</article>
+  
+  <article>
+	<h3>Reduce HTTP requests</h3>
+	<ul class="build">
+		<li>
+			Use <strong><a href="http://coding.smashingmagazine.com/2009/04/27/the-mystery-of-css-sprites-techniques-tools-and-tutorials/">CSS sprites</a></strong> and image maps
+		</li>
+		<li>
+			<strong>Combine JavaScript</strong> files.
+		</li>
+		<li>
+			<strong>Combine CSS</strong> files.
+		</li>
+		<li>
+			Use smart caching (more on that later).
+		</li>
+		<li><strong>The rule with most impact for first-time visitors</strong></li>
+		
+	</ul>
+</article>
+  
+  <article>
+	<h3>HTTP Compression</h3>
+	<ul class="build">
+		<li>
+			Two main alternatives: <strong>gzip, deflate;</strong> both standardized
+		</li>
+		<li>
+			To be used on <strong>text</strong> resources, not binary.
+		</li>
+		<li>
+			Tradeoff between CPU overhead and bandwidth reduction.
+		</li>
+		<li>Example:
+		<section><pre>Accept-Encoding: gzip,deflate</pre><pre>Vary: Accept-Encoding
+Content-Encoding: gzip</pre></section>
+		</li>
+		<li>Turtle-tapping is an issue</li>
+	</ul>
+</article>
+  
+  
+  <article>
+	<h3>HTTP Caching</h3>
+	<ul class="build">
+		<li>
+			More than one way to do it!
+		</li>
+		<li>
+			Last-Modified:
+			<section><pre>Last-Modified: Wed, Sep 01 2011 00:00:00 GMT</pre><pre>If-Modified-Since: Sep 13 2011</pre></section>
+		</li>
+		<li>
+			ETag:
+			<section><pre>ETag: bada55</pre><pre>If-None-Match: bada55</pre></section>
+		</li>
+	</ul>
+</article>
+  
+
+<article>
+<h3>
+  HTTP Caching (continued)
+</h3>
+	<ul class="build">
+		<li>Expires:
+			<section><pre>Expires: Tue, 20 Mar 2007 04:00:25 GMT</pre></section>
+		</li>
+		<li>Max-Age:
+			<section><pre>Cache-Control: max-age=3600</pre></section>
+		</li>
+	</ul>
+</article>
+
+  <article>
+<h3>
+  Placing HTTP Resources
+</h3>
+	<ul class="build">
+		<li>Put stylesheets at the top and scripts at the bottom</li>
+		<li>FOUC or blank screen for CSS not used in the head of the page</li>
+		<li>JavaScript blocks parallel downloads
+			<ul class="build">
+				<li>XHR eval</li>
+				<li>XHR injection</li>
+				<li>Script in iframe</li>
+				<li>Defer attribute (HTML4)</li>
+				<li>document.write</li>
+			</ul>
+			All these differ in the way the browser busy indicators behave. The browser
+			busy indicators are: status bar, progress bar, icon and cursor.
+		</li>
+	</ul>
+</article>
+
+  <article>
+<h3>
+  JS Performance: Efficient Data Access
+</h3>
+	<ul class="build">
+		<li><strong><a href="http://www.nczonline.net/experiments/javascript/performance/identifier-depth/">Minding the scope chain</a></strong>: local variables are faster
+		<section><pre>
+function createChildFor(elementId){
+var doc = document, //store in a local variable
+	element = doc.getElementById(elementId), 
+	newElement = doc.createElement("div");
+element.appendChild(newElement);
+}
+</pre></section></li>
+		<li><code>with</code> and <code>catch</code> augment the scope chain</li>
+		<li>Literal values, local variables, array elements and object properties have <a href="http://www.nczonline.net/experiments/javascript/performance/data-access/">different access times</a></li>
+		<li><code>HTMLCollection</code> is a live query</li>
+	</ul>
+</article>
+  
+  <article>
+	<h3>JS Performance: Flow Control</h3>
+	<ul class="build">
+		<li>Conditionals:
+			<ul class="build">
+				<li><code>if</code> for no more than two values to test	or ranges</li>
+				<li><code>switch</code> for up to ten values to test</li>
+				<li><code>arrays</code> for over ten values which have single values as results</li>
+			</ul>
+		</li>
+		<li>Loops:
+			<ul class="build">
+				<li>Store the count</li>
+				<li>Decrement towards 0</li>
+				<li><code>indexOf</code> over arrays can be much slower than a loop</li>
+				<li>Unrolling loops, <a href="http://home.earthlink.net/~kendrasg/info/js_opt/">Duff's device</a> (?)</li>
+			</ul>
+		</li>
+	</ul>
+  </article>
+  <article>
+  		<h3>JS Performance: other aspects</h3>
+		<ul class="build">
+			<li>String concatenation used to suck, <code>[].join()</code> was preferred.</li>
+			<li>Long running scripts can block the browser - solution: yield using timers or use web workers</li>
+			<li><code><a href="http://javascript.info/tutorial/events-and-timing-depth#the-settimeout-func-0-trick">setTimeout(func, 0)</a></code> provides access to the events stack.
+		</ul>
+  </article>
+  <article>
+		<h3>CSS Performance</h3>
+		<ul class="build">
+			<li>Selectors are matched from <strong><a href="https://developer.mozilla.org/en/Writing_Efficient_CSS">right to left</a></strong>!</li>
+			<li>Avoid universal rules</li>
+			<li>Try and avoid qualifying ids and class names</li>
+			<li>Use as many classes as possible to have most specificity</li>
+			<li>Avoid the descendant selector</li>
+			<li>Use inheritance whenever possible</li>
+		</ul>
+  </article>
+  <article>
+		<h3>Other performance tips</h3>
+		<ul class="build">
+			<li>Reduce DNS lookups</li>
+			<li>Use a CDN</li>
+			<li>Avoid redirects</li>
+			<li>Flush early</li>
+		</ul>
+  </article>
+  <article>
+		<h3>Resources</h3>
+		<p>Steve Souders: <a href="http://www.amazon.com/High-Performance-Web-Sites-Essential/dp/0596529309">High Performance Websites</a></p>
+		<p>Steve Souders: <a href="http://www.amazon.com/Even-Faster-Web-Sites-Performance/dp/0596522304">Even Faster Websites</a><br /></p>
+		<h3 style="padding-top: 1em;">Tools</h3>
+		<p><a href="http://code.google.com/speed/page-speed/">Google PageSpeed</a></p>
+		<p><a href="http://developer.yahoo.com/yslow/">Y!Slow</a></p>
+		<p><a href="http://www.fiddler2.com/fiddler2/">Fiddler</a></p>
+		<p><a href="http://httparchive.org/">The HTTP Archive</a></p>
+		<p>Performance bookmarklets?</p>
+  </article>

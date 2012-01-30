@@ -10,6 +10,8 @@ Since I didn't find any example on the Web on how to do this, I'll give it a go 
 
 From the [documentation](http://hc.apache.org/httpcomponents-client-ga/tutorial/html/connmgmt.html#d4e540), we see that in order to set up a proxy for requests made through HTTPClient you have three options: specifying it directly, getting it from the JRE or implementing a custom RoutePlanner to have complete control over the HTTP route computation. 
 
+<!-- more -->
+
 To specify it explicitly, you need to change a parameter in the HTTPClient configuration: 
 
 ``` java

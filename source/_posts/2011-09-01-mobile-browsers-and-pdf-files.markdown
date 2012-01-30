@@ -14,6 +14,8 @@ To debug the actual HTTP traffic of the devices, I interposed Fiddler as a rever
 
 Let's start with the responses, the server was not configured in any way to serve PDFs, so it gave the same response regardless of the request headers it received.
 
+<!-- more -->
+
 ```
     HTTP/1.1 200 OK
     Date: Tue, 02 Aug 2011 09:18:05 GMT

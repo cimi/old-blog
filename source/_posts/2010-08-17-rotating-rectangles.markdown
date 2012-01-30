@@ -15,6 +15,8 @@ Working on the [maps48 project](http://maps48.sourceforge.net/ "Maps48"), one of
 
 This can be easily achieved through some basic trigonometry. The key to this are two angles: alpha, the angle the rectangle was rotated by and beta, the angle the diagonal makes with the width.
 
+<!-- more -->
+
 [![Problem diagram](http://improve.ro/wp-content/uploads/2010/08/rectangles-2.png "Problem diagram")](http://improve.ro/wp-content/uploads/2010/08/rectangles-2.png)
 
 First,  I determine the angle the diagonal makes with the baseline (the rectangle's width):
