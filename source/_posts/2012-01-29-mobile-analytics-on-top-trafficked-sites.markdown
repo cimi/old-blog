@@ -16,73 +16,6 @@ I used Firebug to check the requests being made and the size of the scripts. I a
 
 I tried the domain of the companies directly (i.e., canon.com) and I did not navigate deeper into the site structure for any of the tested websites. It may be possible that some sites who reported to not have a mobile optimized site to simply not redirect to it when accessing them directly.
 
-<table>
-	<thead>
-		<tr>
-			<td>Company</td>
-			<td>Analytics Provider</td>
-			<td>Size of JavaScript</td>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>Amazon</td>
-			<td>unknown</td>
-			<td>5KB (2KB)</td>
-		</tr>
-		<tr>
-			<td>eBay</td>
-			<td>unknown</td>
-			<td>0KB</td>
-		</tr>
-		<tr>
-			<td>Walmart</td>
-			<td>unknown</td>
-			<td>0KB</td>
-		</tr>
-		<tr>
-			<td>BestBuy</td>
-			<td>Omniture</td>
-			<td>0KB</td>
-		</tr>
-		<tr>
-			<td>Groupon</td>
-			<td>Google Analytics</td>
-			<td>13KB / 3KB</td>
-		</tr>
-		<tr>
-			<td>IKEA</td>
-			<td>Omniture</td>
-			<td>67KB (22KB)</td>
-		</tr>
-		<tr>
-			<td>Target</td>
-			<td>Omniture</td>
-			<td>47KB (17KB)</td>
-		</tr>
-		<tr>
-			<td>Newegg</td>
-			<td>IBM Coremetrics</td>
-			<td>0KB</td>
-		</tr>
-		<tr>
-			<td>IBM</td>
-			<td>IBM Unica</td>
-			<td>18.6KB (6.8KB)</td>
-		</tr>
-		<tr>
-			<td>Microsoft</td>
-			<td>Webtrends</td>
-			<td>0KB</td>
-		</tr>
-		<tr>
-			<td>Dell</td>
-			<td>Omniture</td>
-			<td>50KB (19KB)</td>
-		</tr>
-	</tbody>
-</table>
-
 [Amazon](http://www.amazon.com/gp/aw/h.html/190-2635517-0125555 "Amazon Mobile") uses inline JavaScript to build the URL of an analytics beacon. The code is minified and the total size (including script, noscript, img and a div tag) is 5KB. This comes to about 2KB gzipped.
 
 [eBay](http://hp.mobileweb.ebay.com/home "eBay Mobile") and [Walmart](http://mobile.walmart.com/ "Walmart Mobile") do not seem to have any form of analytics code sent on the client side. Probably some form of tracking is done on the server, it being transparent to the client.
@@ -104,3 +37,67 @@ Groupon has separate sites for [enhanced](http://touch.groupon.com/ "Groupon for
 [Microsoft](http://m.microsoft.com "Microsoft Mobile") uses a directly embedded beacon image that hits [webtrends.com](http://webtrends.com/ "webtrends").
 
 SAP, Canon, Asus, Toshiba, Fujitsu and Acer do not serve optimized content for mobile - or at least I was not able to find their mobile site given the methods described in the beginning.
+
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">
+  google.load('visualization', '1', {packages: ['corechart']});
+</script>
+
+<script type="text/javascript">
+  function drawVisualization() {
+    // Create and populate the data table.
+    var data = new google.visualization.DataTable();
+    var raw_data = [
+      ['Amazon', 5, 2],
+      ['eBay', 0, 0],
+      ['Walmart', 0, 0],
+      ['IBM', 18.6, 6.8],
+      ['Groupon Enhanced', 0, 13],
+      ['Groupon Featured', 0, 3],
+      ['IKEA', 67, 22],
+      ['Target', 47, 17],
+      ['Newegg', 0, 0],
+      ['Microsoft', 0, 0],
+      ['Dell', 50, 19],
+      ['HP', 53, 20]
+    ];
+    
+    var years = ['Uncompressed', 'Compressed'];
+                    
+    data.addColumn('string', 'Year');
+    for (var i = 0; i  < raw_data.length; ++i) {
+      data.addColumn('number', raw_data[i][0]);    
+    }
+    
+    data.addRows(years.length);
+  
+    for (var j = 0; j < years.length; ++j) {    
+      data.setValue(j, 0, years[j].toString());    
+    }
+    for (var i = 0; i  < raw_data.length; ++i) {
+      for (var j = 1; j  < raw_data[i].length; ++j) {
+        data.setValue(j-1, i+1, raw_data[i][j]);    
+      }
+    }
+    
+    // Create and draw the visualization.
+    new google.visualization.ColumnChart(document.getElementById('visualization')).
+        draw(data,
+             {
+               title:"Size of Mobile Metrics Code", 
+               width:600, height:400,
+               vAxis: {
+                 format: '#.##KB',
+                 baseline: -2,
+                 minValue: 0,
+                 viewWindow: { min: -2 }
+               }
+             }
+        );
+  }
+  
+
+  google.setOnLoadCallback(drawVisualization);
+</script>
+
+<div id="visualization" style="width: 600px; height: 400px;"></div>
