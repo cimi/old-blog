@@ -49,7 +49,7 @@ default_asides: [asides/recent_posts.html, asides/twitter.html, asides/delicious
 # ----------------------- #
 
 # Twitter
-twitter_user:
+twitter_user: ciminian
 twitter_tweet_count: 4
 twitter_show_replies: false
 twitter_follow_button: true
