@@ -1,0 +1,139 @@
+---
+layout: presentation 
+title: "Delivering Modular JavaScript to Mobile Clients"
+templateid: hp
+authorslide: "true"
+date: 2012-01-09 00:50
+---
+  
+%article.smaller
+  %q
+    The module pattern is widely used because [...] helps organize your code as it grows. [...] the
+    = succeed "," do
+      %strong
+        module
+        pattern provides the tools to create self-contained decoupled pieces of code
+    which can be treated as black boxes of functionality and added, replaced, or removed [...].
+  .author
+    %a{:href => "http://shop.oreilly.com/product/9780596806767.do"}
+      Stoyan Stefanov,
+      = succeed "JavaScript" do
+        %br/
+      Patterns (O'Reilly, 2010)
+
+%article
+  %h3 The JavaScript Module pattern
+  %ul.build
+    %li JavaScript does not have special syntax for namespacing/packages.
+    %li
+      The module pattern is
+      = succeed ":" do
+        %a{:href => "http://stackoverflow.com/a/7472020/182629"} a combination of several patterns
+      namespaces, immediate functions, private/privileged functions, declaring dependencies.
+    %li
+      There are many ways to do it, but now
+      = succeed "." do
+        %a{:href => "https://github.com/amdjs/amdjs-api/wiki/AMD"} a standard has emerged: AMD
+
+%article
+  %h3 What is AMD?
+  %ul.build
+    %li
+      Background: node.js,
+      = succeed "," do
+        %a{:href => "http://www.commonjs.org/"} CommonJS
+      = succeed "." do
+        %a{:href => "http://wiki.commonjs.org/wiki/Modules/Transport"} transport formats
+    %li Simple API for defining and including modules, extensive information on the wiki.
+    %li Also offers the opportunity to create plugins for your loader (not sure why, yet :).
+    %li
+      Several compatible loader libraries:
+      = succeed "," do
+        %a{:href => "http://requirejs.org/"} require.js
+      = succeed "," do
+        %a{:href => "https://github.com/unscriptable/curl"} curl.js
+      = succeed "," do
+        %a{:href => "http://labjs.com/"} lab.js
+      = succeed "," do
+        %a{:href => "https://github.com/jrburke/almond"} almond
+      %a{:href => "https://github.com/jbrantly/yabble"} yabble
+      and others.
+
+%article
+  %h3 The AMD API - defining a module
+  %section
+    %pre
+      :preserve
+        define('myModule', 
+            ['foo', 'bar'], 
+            // module definition function
+            // dependencies (foo and bar) are mapped to function parameters
+            function ( foo, bar ) {
+                // return a value that defines the module export
+                // (i.e the functionality we want to expose for consumption)
+            
+                // create your module here
+                var myModule = {
+                    doStuff:function(){
+                        console.log('Yay! Stuff');
+                    }
+                }
+         
+                return myModule;
+        });
+
+%article
+  %h3 The AMD API - requiring modules
+  %section
+    %pre
+      :preserve        
+        define(function ( require ) {
+            var isReady = false, foobar;
+         
+            // note the inline require within our module definition
+            require(['foo', 'bar'], function (foo, bar) {
+                isReady = true;
+                foobar = foo() + bar();
+            });
+         
+            // we can still return a module
+            return {
+                isReady: isReady,
+                foobar: foobar
+            };
+        });
+
+%article
+  %h3 AMD on Mobile
+  %ul.build
+    %li Use case: minimize the number of HTTP requests while keeping the AMD structure and using an existing loader.
+    %li Ideally: serve one file, with the loader bundled.
+    %li
+      Enter
+      %a{:href => "https://github.com/jrburke/almond"} almond.js
+      \- lightweight AMD shim.
+    %li
+      To build the final javascript, we can integrate
+      %a{:href => "https://github.com/jrburke/r.js/"} r.js
+      in our Ant task (through Rhino).
+
+%article
+  %h3 Benefits
+  %ul.build
+    %li Better code structure, clearer functions/modules.
+    %li Very little extra code to include (almond is under 1KB minified and gzipped).
+    %li Negligible impact on performance (just a couple of function calls).
+    %li Standard modules that can be used in other situations.
+
+%article
+  %h3 Resources
+  %p
+    Alex MacCaw:
+    %a{:href => "http://shop.oreilly.com/product/0636920018421.do"} JavaScript Web Applications
+  %p
+    Addy Osmani:
+    %a{:href => "http://addyosmani.com/writing-modular-js/"} Writing Modular JavaScript
+  %p
+    %a{:href => "http://requirejs.org/docs/optimization.html"} Require.js Optimizer
+  %p
+    %a{:href => "https://github.com/amdjs/amdjs-api/wiki"} AMD API specification

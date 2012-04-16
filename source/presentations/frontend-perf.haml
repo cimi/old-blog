@@ -7,209 +7,249 @@ authorslide: "true"
 ---
 
 %article
-    %h3 Presentation Outline
-    %ul
-        %li Speed as a <strong>feature</strong>
+  %h3
+    Presentation Outline
+  %ul
+    %li
+      Speed as a
+      %strong feature
+    %li
+      %strong HTTP
+      performance optimization
+    %li
+      %strong Organizing HTML resources
+    %li
+      %strong CSS Optimizations
+    %li
+      %strong JS Optimizations
+%article
+  %h3
+    Speed as a Feature
+  %ul.build
+    %li
+      Speed improves user experience.
+    %li
+      Smaller and faster websites lead to reduced costs, especially in the mobile space.
+    %li
+      It is taken into account by Google in SR rankings.
+    %li
+      Fact: on average 80% time spent downloading page resources, 20% spent on the server rendering the page.
+%article.smaller
+  %q
+    Research on a wide variety of hypertext systems has shown that
+    %strong users need response times of less than one second
+    when moving from one page to another if they are to navigate freely through an information space.
+  .author
+    %a{:href => "http://www.useit.com/alertbox/response-times.html"}
+      Jakob Nielsen,
+      = succeed "usability" do
+        %br/
+      expert
+%article.smaller
+  %q
+    The page with 10 results took .4 seconds to generate. The page with 30 results took .9 seconds.
+    %strong Half a second delay caused a 20% drop in traffic. Half a second delay killed user satisfaction.
+  .author
+    %a{:href => "http://glinden.blogspot.com/2006/11/marissa-mayer-at-web-20.html"}
+      Greg Linden,
+      %br/
+      on A/B testing for Google
+%article
+  %h3 Website Performance Techniques (HTTP)
+  %ul.build
+    %li
+      %strong Reduce HTTP requests
+    %li
+      %strong Use HTTP compression:
+      gzip, deflate
+    %li
+      %strong Use HTTP caching:
+      If-Modified Since, ETag, Expires, Max-age
+%article
+  %h3 Reduce HTTP requests
+  %ul.build
+    %li
+      Use
+      %strong
+        %a{:href => "http://coding.smashingmagazine.com/2009/04/27/the-mystery-of-css-sprites-techniques-tools-and-tutorials/"} CSS sprites
+      and image maps
+    %li
+      %strong Combine JavaScript
+      files.
+    %li
+      %strong Combine CSS
+      files.
+    %li
+      Use smart caching (more on that later).
+    %li
+      %strong The rule with most impact for first-time visitors
+%article
+  %h3 HTTP Compression
+  %ul.build
+    %li
+      Two main alternatives:
+      %strong gzip, deflate;
+      both standardized
+    %li
+      To be used on
+      %strong text
+      resources, not binary.
+    %li
+      Tradeoff between CPU overhead and bandwidth reduction.
+    %li
+      Example:
+      %section
+        %pre Accept-Encoding: gzip, deflate
+        %pre
+          :preserve
+            Vary: Accept-Encoding
+            Content-Encoding: gzip    
+    %li Turtle-tapping is an issue
+%article
+  %h3 HTTP Caching
+  %ul.build
+    %li
+      More than one way to do it!
+    %li
+      Last-Modified:
+      %section
+        %pre Last-Modified: Wed, Sep 01 2011 00:00:00 GMT
+        %pre If-Modified-Since: Sep 13 2011
+    %li
+      ETag:
+      %section
+        %pre ETag: bada55
+        %pre If-None-Match: bada55
+%article
+  %h3
+    HTTP Caching (continued)
+  %ul.build
+    %li
+      Expires:
+      %section
+        %pre Expires: Tue, 20 Mar 2007 04:00:25 GMT
+    %li
+      Max-Age:
+      %section
+        %pre Cache-Control: max-age=3600
+%article
+  %h3
+    Placing HTTP Resources
+  %ul.build
+    %li Put stylesheets at the top and scripts at the bottom
+    %li FOUC or blank screen for CSS not used in the head of the page
+    %li
+      JavaScript blocks parallel downloads
+      %ul.build
+        %li XHR eval
+        %li XHR injection
+        %li Script in iframe
+        %li Defer attribute (HTML4)
+        %li document.write
+      All these differ in the way the browser busy indicators behave. The browser
+      busy indicators are: status bar, progress bar, icon and cursor.
+%article
+  %h3
+    JS Performance: Efficient Data Access
+  %ul.build
+    %li
+      %strong>
+        %a{:href => "http://www.nczonline.net/experiments/javascript/performance/identifier-depth/"} Minding the scope chain
+      \: local variables are faster
+      %section
+        %pre
+          :preserve
+            function createChildFor(elementId){
+                var doc = document, //store in a local variable
+                    element = doc.getElementById(elementId), 
+                    newElement = doc.createElement("div");
+                    element.appendChild(newElement);
+            }
+    %li
+      %code with
+      and
+      %code catch
+      augment the scope chain
+    %li
+      Literal values, local variables, array elements and object properties have
+      %a{:href => "http://www.nczonline.net/experiments/javascript/performance/data-access/"} different access times
+    %li
+      %code HTMLCollection
+      is a live query
+%article
+  %h3 JS Performance: Flow Control
+  %ul.build
+    %li
+      Conditionals:
+      %ul.build
         %li
-            %strong HTTP performance optimization
+          %code if
+          for no more than two values to test or ranges
         %li
-            %strong Organizing HTML resources
+          %code switch
+          for up to ten values to test
         %li
-            %strong CSS Optimizations
+          %code arrays
+          for over ten values which have single values as results
+    %li
+      Loops:
+      %ul.build
+        %li Store the count
+        %li Decrement towards 0
         %li
-            %strong JS Optimizations
-
-%article
-    %h3 Speed as a Feature
-    %ul{:class => "build"}
-        %li Speed improves user experience.
-        %li Smaller and faster websites lead to reduced costs, especially in the mobile space.
-        %li It is taken into account by Google in SR rankings.
-        %li Fact: on average, 80% time spent downloading page resources, 20% spent on the server rendering the page.
-  
-%article{:class => "smaller"}
-    %q Research on a wide variety of hypertext systems has shown that <strong>users need response times of less than one second</strong> when moving from one page to another if they are to navigate freely through an information space.
-    %div{:class => "author"}
-        %a{:href => "http://www.useit.com/alertbox/response-times.html"} Jakob Nielsen, 
-        %br usability expert
-  
-%article{:class => "smaller"}
-    %q The page with 10 results took .4 seconds to generate. The page with 30 results took .9 seconds. <strong>Half a second delay caused a 20% drop in traffic. Half a second delay killed user satisfaction</strong>
-    %div{:class => 'author'}
-        %a{:href => "http://glinden.blogspot.com/2006/11/marissa-mayer-at-web-20.html"}Greg Linden, <br /> on A/B testing for Google
-
-%article
-    %h3 Website Performance Techniques (HTTP)
-    %ul{:class => "build"}
-        %li <strong>Reduce HTTP requests</strong>
-        %li <strong>Use HTTP compression:</strong> gzip, deflate
-        %li <strong>Use HTTP caching:</strong> If-Modified Since, ETag, Expires, Max-age
-  
-%article
-    %h3 Reduce HTTP requests
-    %ul{:class => "build"}
-        %li Use <strong><a href="http://coding.smashingmagazine.com/2009/04/27/the-mystery-of-css-sprites-techniques-tools-and-tutorials/">CSS sprites</a> and image maps</strong>
+          %code indexOf
+          over arrays can be much slower than a loop
         %li
-            :markdown
-                *Combine JavaScript* files.
-        %li
-            %strong Combine CSS
-        files.
-        %li Use smart caching (more on that later).
-        %li
-            %strong The rule with most impact for first-time visitors
-
-/
+          Unrolling loops,
+          %a{:href => "http://home.earthlink.net/~kendrasg/info/js_opt/"} Duff's device
+          (?)
 %article
-    %h3 HTTP Compression
-    %ul{:class => "build"}
-        %li Two main alternatives: 
-            %strong gzip, deflate; both standardized
-        %li To be used on 
-            %strong text resources, not binary.
-        %li Tradeoff between CPU overhead and bandwidth reduction.
-        %li Example:
-            %section
-                %pre Accept-Encoding: gzip,deflate
-                %pre Vary: Accept-Encoding
-                %pre Content-Encoding: gzip
-        %li Turtle-tapping is an issue
-
+  %h3 JS Performance: other aspects
+  %ul.build
+    %li
+      String concatenation used to suck,
+      %code [].join()
+      was preferred.
+    %li Long running scripts can block the browser - solution: yield using timers or use web workers
+    %li
+      %code
+        %a{:href => "http://javascript.info/tutorial/events-and-timing-depth#the-settimeout-func-0-trick"} setTimeout(func, 0)
+      provides access to the events stack.
 %article
-    %h3 HTTP Caching
-    %ul{:class => "build"}
-        %li More than one way to do it!
-        %li Last-Modified:
-            %section
-                %pre Last-Modified: Wed, Sep 01 2011 00:00:00 GMT
-                %pre If-Modified-Since: Sep 13 2011
-        %li ETag:
-            %section
-                %pre ETag: bada55
-                %pre If-None-Match: bada55
-
+  %h3 CSS Performance
+  %ul.build
+    %li
+      Selectors are matched from
+      %strong
+        %a{:href => "https://developer.mozilla.org/en/Writing_Efficient_CSS"} right to left!
+    %li Avoid universal rules
+    %li Try and avoid qualifying ids and class names
+    %li Use as many classes as possible to have most specificity
+    %li Avoid the descendant selector
+    %li Use inheritance whenever possible
 %article
-    %h3 HTTP Caching (continued)
-    %ul{:class="build"}
-        %li Expires:
-            %section
-                %pre Expires: Tue, 20 Mar 2007 04:00:25 GMT
-        %li Max-Age:
-            %section
-                %pre Cache-Control: max-age=3600
-
+  %h3 Other performance tips
+  %ul.build
+    %li Reduce DNS lookups
+    %li Use a CDN
+    %li Avoid redirects
+    %li Flush early
 %article
-    %h3 Placing HTTP Resources
-    %ul{:class => "build"}
-        %li Put stylesheets at the top and scripts at the bottom
-        %li FOUC or blank screen for CSS not used in the head of the page
-        %li JavaScript blocks parallel downloads
-            %ul{:class="build"}
-                %li XHR eval
-                %li XHR injection
-                %li Script in iframe
-                %li Defer attribute (HTML4)
-                %li document.write
-            All these differ in the way the browser busy indicators behave. The browser
-            busy indicators are: status bar, progress bar, icon and cursor.
-
-%article
-    %h3 JS Performance: Efficient Data Access
-    %ul.build
-        %li
-            %strong
-                %a{:href => "http://www.nczonline.net/experiments/javascript/performance/identifier-depth/"}Minding the scope chain
-                : local variables are faster
-        %section
-            %pre
-function createChildFor(elementId){
-var doc = document, //store in a local variable
-    element = doc.getElementById(elementId), 
-    newElement = doc.createElement("div");
-element.appendChild(newElement);
-}
-        %li
-            %code with 
-            and 
-            %code catch 
-            augment the scope chain
-                
-        %li Literal values, local variables, array elements and object properties have 
-            %a{:href => "http://www.nczonline.net/experiments/javascript/performance/data-access/"}different access times
-        %li
-            %code
-                HTMLCollection 
-            is a live query
-
-%article
-    %h3 JS Performance: Flow Control
-    %ul.build
-        %li Conditionals:
-            %ul.build
-                %li
-                    %code if
-                    for no more than two values to test or ranges
-                %li 
-                    %code switch 
-                    for up to ten values to test
-                %li
-                    %code arrays 
-                    for over ten values which have single values as results
-        %li Loops:
-            %ul.build
-                %li Store the count
-                %li Decrement towards 0
-                %li
-                    %code indexOf 
-                    over arrays can be much slower than a loop
-                %li Unrolling loops, 
-                    %a{:href => "http://home.earthlink.net/~kendrasg/info/js_opt/"}Duff's device 
-                    (?)
-%article
-    %h3 JS Performance: other aspects
-    %ul.build
-        %li String concatenation used to suck, 
-            %code [].join() 
-            was preferred.
-        %li Long running scripts can block the browser - solution: yield using timers or use web workers
-        %li 
-            %code
-                %a{:href => "http://javascript.info/tutorial/events-and-timing-depth#the-settimeout-func-0-trick"}setTimeout(func, 0)
-                provides access to the events stack.
-%article
-    %h3 CSS Performance
-    %ul.build
-        %li Selectors are matched from 
-            %strong
-                %a{:href => "https://developer.mozilla.org/en/Writing_Efficient_CSS"}right to left!
-        %li Avoid universal rules
-        %li Try and avoid qualifying ids and class names
-        %li Use as many classes as possible to have most specificity
-        %li Avoid the descendant selector
-        %li Use inheritance whenever possible
-
-%article
-    %h3 Other performance tips
-    %ul.build
-        %li Reduce DNS lookups
-        %li Use a CDN
-        %li Avoid redirects
-        %li Flush early
-
-%article
-    %h3 Resources
-    %p Steve Souders: 
-        %a{:href => "http://www.amazon.com/High-Performance-Web-Sites-Essential/dp/0596529309"}High Performance Websites
-    %p Steve Souders: 
-        %a{:href => "http://www.amazon.com/Even-Faster-Web-Sites-Performance/dp/0596522304"}Even Faster Websites
-    %br
-    %h3{:style => "padding-top: 1em;"} Tools
-    %p
-        %a{:href => "http://code.google.com/speed/page-speed/"}Google PageSpeed
-    %p
-        %a{:href => "http://developer.yahoo.com/yslow/"}Y!Slow
-    %p
-        %a{:href => "http://www.fiddler2.com/fiddler2/"}Fiddler
-    %p
-        %a{:href => "http://httparchive.org/"}The HTTP Archive
-    %p Performance bookmarklets?
+  %h3 Resources
+  %p
+    Steve Souders:
+    %a{:href => "http://www.amazon.com/High-Performance-Web-Sites-Essential/dp/0596529309"} High Performance Websites
+  %p
+    Steve Souders:
+    %a{:href => "http://www.amazon.com/Even-Faster-Web-Sites-Performance/dp/0596522304"} Even Faster Websites
+    %br/
+  %h3{:style => "padding-top: 1em;"} Tools
+  %p
+    %a{:href => "http://code.google.com/speed/page-speed/"} Google PageSpeed
+  %p
+    %a{:href => "http://developer.yahoo.com/yslow/"} Y!Slow
+  %p
+    %a{:href => "http://www.fiddler2.com/fiddler2/"} Fiddler
+  %p
+    %a{:href => "http://httparchive.org/"} The HTTP Archive
+  %p Performance bookmarklets?
