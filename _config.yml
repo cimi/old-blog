@@ -73,3 +73,5 @@ disqus_short_name: improvero
 
 # Google Analytics
 google_analytics_tracking_id: UA-6170776-1
+
+theme: jekyll-theme-hacker
