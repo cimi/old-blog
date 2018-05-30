@@ -1,5 +1,4 @@
---- 
-wordpress_id: 13
+---
 layout: post
 title: Proxy settings with HTTPClient and Spring
 date: Sat Oct 30 21:16:06 +0300 2010

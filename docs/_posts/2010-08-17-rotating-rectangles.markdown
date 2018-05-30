@@ -1,13 +1,7 @@
---- 
-wordpress_id: 58
+---
 layout: post
 title: Rotating Rectangles
 date: Tue Aug 17 14:21:23 +0300 2010
-categories: 
-  slug: javascript
-  title: javascript
-  autoslug: javascript
-wordpress_url: http://improve.ro/?p=58
 ---
 Working on the [maps48 project](http://maps48.sourceforge.net/ "Maps48"), one of the problems that needed solving was calculating the amount of map space needed to be retrieved to allow rotating the map without introducing any blank space in the viewport. As you can see from the diagram below what we actually need is to get the rotated rectangle's horizontal and vertical projection as the new width and height.The black border represents the viewport. If we were to only have an image the size of the viewport and rotate it, we'd end up with something like the orange rectangle. Notice the blank spaces in the viewport :). The solution is to resize (or import a larger bit of the map, in our case) the image - the pink rectangle - so that when rotated it fills up the viewport entirely, as does the green rectangle.
 

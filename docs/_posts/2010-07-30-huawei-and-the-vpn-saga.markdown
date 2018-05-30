@@ -1,10 +1,8 @@
---- 
-wordpress_id: 29
+---
 layout: post
 title: Huawei and the VPN Saga
 date: Fri Jul 30 11:09:31 +0300 2010
 categories: [networking, troubleshooting]
-wordpress_url: http://improve.ro/?p=29
 ---
 
 After a horrendous experience, usually I feel the need to share my findings with the world. Other unhappy souls shouldn't go through what I've gone through yesterday.My company offers the possibility of working remotely, by connecting to its VPN. I have a USB dongle with my certificates and also a preinstalled software that manages the VPN connection. I travel fairly often to my hometown, Braşov. This week was no exception, I decided to work remotely for a couple of days. 

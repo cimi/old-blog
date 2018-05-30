@@ -1,13 +1,7 @@
---- 
-wordpress_id: 44
+---
 layout: post
 title: Weblogic Encoding Issue
 date: Thu Aug 12 14:28:43 +0300 2010
-categories: 
-  slug: troubleshooting
-  title: troubleshooting
-  autoslug: troubleshooting
-wordpress_url: http://improve.ro/?p=44
 ---
 Trying to deploy some RSS feeds as .jspx views on a [WebLogic 10 server](http://en.wikipedia.org/wiki/Oracle_WebLogic_Server "Oracle WebLogic"), I noticed that it mangled all UTF-8 output. This was part of a Spring MVC web-application. The problem was that on my local development server (Apache Tomcat 6.0) everything rendered fine, but on the WebLogic server all non-ANSI characters were not outputted correctly.
 
